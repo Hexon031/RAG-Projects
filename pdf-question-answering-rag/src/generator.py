@@ -1,15 +1,16 @@
 from transformers import pipeline
+import streamlit as st
 
-# Load the model once (cached by Streamlit)
-_qa_pipeline = pipeline(
-    "text2text-generation",
-    model="google/flan-t5-base"
-)
+@st.cache_resource
+def load_qa_pipeline():
+    return pipeline(
+        "text2text-generation",
+        model="google/flan-t5-base"
+    )
+
+_qa_pipeline = load_qa_pipeline()
 
 def generate_answer(question: str, context_chunks: list) -> str:
-    """
-    Generate an answer using retrieved document chunks.
-    """
     context = "\n".join(context_chunks)
 
     prompt = f"""
@@ -28,5 +29,4 @@ Question:
         max_length=256,
         do_sample=False
     )
-
     return result[0]["generated_text"]
