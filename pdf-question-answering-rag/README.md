@@ -2,6 +2,8 @@
 
 An end-to-end **Retrieval-Augmented Generation (RAG)** application that allows users to upload PDF documents and ask questions grounded strictly in the document content.
 
+🌐 Live Demo - https://pdf-reader-rag.streamlit.app/
+
 ## 🚀 Features
 - PDF upload and text extraction
 - Chunking with overlap for semantic accuracy
@@ -28,7 +30,7 @@ PDF → Chunking → Embeddings → FAISS → Retrieval → LLM → Answer
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
-🌐 Live Demo
+
 
 🔗 Deployed on Streamlit Community Cloud
 
