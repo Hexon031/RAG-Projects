@@ -1,17 +1,14 @@
-import os
-import google.generativeai as genai
-from dotenv import load_dotenv
+from transformers import pipeline
 
-# Load environment variables
-load_dotenv()
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-
-# Load model once
-_llm = genai.GenerativeModel("gemini-2.5-flash")
+# Load the model once (cached by Streamlit)
+_qa_pipeline = pipeline(
+    "text2text-generation",
+    model="google/flan-t5-base"
+)
 
 def generate_answer(question: str, context_chunks: list) -> str:
     """
-    Generates an answer using retrieved context chunks.
+    Generate an answer using retrieved document chunks.
     """
     context = "\n".join(context_chunks)
 
@@ -26,5 +23,10 @@ Question:
 {question}
 """
 
-    response = _llm.generate_content(prompt)
-    return response.text.strip()
+    result = _qa_pipeline(
+        prompt,
+        max_length=256,
+        do_sample=False
+    )
+
+    return result[0]["generated_text"]
